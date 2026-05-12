@@ -1,0 +1,56 @@
+/* ========================================
+   🌈 COLOR PALETTE
+======================================== */
+
+:root {
+  /* Backgrounds */
+  --bg-main: #faefb6f5;
+  --bg-soft: #F0EBFF;
+  --bg-card: #FFFFFF;
+  --bg-secondary: #c6bc91f0;
+
+  /* Brand Colors */
+  --primary: #a97ae6;
+  --primary-dark: #985dd3;
+
+  --secondary: #8eb7e5;
+  --secondary-dark: #689fd6;
+
+  /* Accent */
+  --accent: #E6C26A;
+
+  /* Text */
+  --text-main: #2D2A32;
+  --text-soft: #6E6A75;
+
+  /* Borders + Shadows */
+  --border-soft: rgba(140, 122, 230, 0.15);
+  --shadow-soft: 0 8px 30px rgba(140, 122, 230, 0.08);
+
+  /* Gradients */
+  --gradient-main:
+    radial-gradient(
+      circle at top left,
+      rgba(125, 102, 214, 0.34),
+      transparent 30%
+    ),
+
+    radial-gradient(
+      circle at bottom right,
+      rgba(95, 189, 205, 0.22),
+      transparent 30%
+    ),
+
+    radial-gradient(
+      circle at center,
+      rgba(230, 194, 106, 0.08),
+      transparent 40%
+    ),
+
+    linear-gradient(
+      135deg,
+      #be54ac 0%,
+      #406bc2 45%,
+      #8c52bf 100%
+    );
+}

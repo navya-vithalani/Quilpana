@@ -1,0 +1,53 @@
+/* ========================================
+   🌌 SPLASH SCREEN UTILITIES
+======================================== */
+
+@keyframes ambient-rotate {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(8deg) scale(1.04);
+  }
+
+  100% {
+    transform: rotate(-8deg) scale(0.98);
+  }
+}
+
+.animate-ambient {
+  animation: ambient-rotate 18s ease-in-out infinite;
+}
+
+@keyframes gentle-float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-gentle-float {
+  animation: gentle-float 5s ease-in-out infinite;
+}
+
+@keyframes shutter-drop {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0%);
+  }
+}
+
+.animate-shutter-drop {
+  animation: shutter-drop 0.6s ease forwards;
+}

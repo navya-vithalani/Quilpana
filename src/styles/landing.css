@@ -1,0 +1,64 @@
+/* ========================================
+   🌌 LANDING PAGE
+======================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-main);
+}
+
+@keyframes gentleFloat {
+
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+
+}
+
+.animate-float {
+  animation: gentleFloat 5s ease-in-out infinite;
+}
+
+/* ========================================
+   🌌 SCROLL SNAP SYSTEM
+======================================== */
+
+.snap-container {
+  scroll-snap-type: y proximity;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  position: relative;
+}
+
+.hero-cube {
+  perspective: 1800px;
+  transform-style: preserve-3d;
+  transform-origin: center top;
+  will-change: transform, opacity;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+}
+
+.first-section {
+  will-change: transform, opacity;
+}

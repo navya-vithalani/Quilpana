@@ -1,0 +1,60 @@
+/* ========================================
+   🌍 GLOBAL STYLES
+======================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+
+  font-family:
+    Inter,
+    system-ui,
+    sans-serif;
+
+  overflow-x: hidden;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.4);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(130,120,200,0.45);
+  border-radius: 999px;
+}
+
+.page-layout {
+  @apply flex-grow container mx-auto;
+}
+
+/* HIDE SCROLLBAR */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

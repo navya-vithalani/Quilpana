@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fdf2f8" />
+    <title>Cognipop</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Quicksand:wght@500;700&display=swap');
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        background-color: #fdf2f8;
+        font-family: 'Quicksand', 'Comic Neue', 'Comic Sans MS', sans-serif;
+      }
+
+      .font-playful {
+        font-family: 'Quicksand', 'Comic Neue', 'Comic Sans MS', sans-serif;
+      }
+
+      #game-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      #ui-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      .pointer-events-auto {
+        pointer-events: auto;
+      }
+
+      @keyframes bounce-slight {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+
+      .animate-bounce-slight {
+        animation: bounce-slight 2s infinite ease-in-out;
+      }
+    </style>
+
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "phaser": "https://aistudiocdn.com/phaser@^3.90.0"
+  }
+}
+</script>
+  <script type="module" crossorigin src="./assets/index-C4s3SdgJ.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BqGzRpSn.css">
+</head>
+  <body>
+    <div id="root"></div>
+</body>
+</html>
