@@ -3,7 +3,6 @@ import React, { useState, useCallback, useMemo} from 'react';
 import { VoteStatus, UserVotes } from './types/types';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { GAMES, TEMPLATES, TOTAL_VOTE_QUOTA, TOTAL_SKILL_GAMES_QUOTA } from './constants';
-import Header from './components/Header';
 import PlayerHeader from './components/PlayerHeader';
 import CreatorHeader from './components/CreatorHeader';
 import PlayerMode from './pages/PlayerMode';
@@ -17,11 +16,14 @@ import Modal from './components/Modal';
 import UploadGameModal from './components/UploadGameModal';
 import FeedbackPage from './pages/FeedbackPage';
 import SplashPage from './components/landing/SplashPage';
-import { useToast } from './components/Toast';
+import { useToast }  from './components/system/Toast';
 import Footer from './components/Footer';
 import PlaceholderPage from './pages/PlaceholderPage';
 import SynapseChat from "./components/chat/SynapseChat";
-import Navbar from "./components/navbar";
+import Navbar from "./components/Navbar";
+import SparkPage from "./pages/SparkPage";
+import ManifestoPage from "./pages/ManifestoPage";
+import Manifesto from "./pages/ManifestoChatgpt"
 
 function App() {
   const navigate = useNavigate();
@@ -161,6 +163,24 @@ function App() {
         } />
 
         <Route path="/player/:id" element={<GamePage />} />
+
+        <Route path="/spark" element={
+          <MainLayout>
+            <SparkPage />
+          </MainLayout>
+        } />
+
+        <Route path="/manifesto" element={
+          <MainLayout>
+            <ManifestoPage />
+          </MainLayout>
+        } />
+        
+        <Route path="/manifestocgpt" element={
+          <MainLayout>
+            <Manifesto />
+          </MainLayout>
+        } />
 
         <Route path="/profile" element={
           <MainLayout>

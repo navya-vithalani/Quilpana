@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Modal from "./Modal";
 import { FaInfoCircle } from "react-icons/fa";
-import { useToast } from "./Toast";
+import { useToast } from "./system/Toast";
 
 type UploadGameModalProps = {
   isOpen: boolean;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Game, VoteStatus } from '../types/types';
 import { UpArrowIcon, DownArrowIcon, HeartIcon } from './Icons';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from './Toast';
+import { useToast } from './system/Toast';
 
 interface GameCardProps {
   game: Game;

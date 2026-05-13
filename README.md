@@ -20,6 +20,12 @@ Built as a long-term project exploring immersive interfaces, creator tools, and 
 ### Creator Mode
 ![Creator Mode](./assets/screenshots/creator-mode.png)
 
+### Spark page
+![Spark Page](./assets/screenshots/spark-page.png)
+
+### Manifesto page
+![Manifesto Page](./assets/screenshots/manifesto-page.png)
+
 ---
 
 ## Current Features

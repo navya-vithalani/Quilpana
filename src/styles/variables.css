@@ -5,9 +5,10 @@
 :root {
   /* Backgrounds */
   --bg-main: #faefb6f5;
-  --bg-soft: #F0EBFF;
-  --bg-card: #FFFFFF;
+  --bg-soft: #efb3f2;
+  --bg-card: #e491f39f;
   --bg-secondary: #c6bc91f0;
+  --bg-glass: rgba(255, 255, 255, 0.72);
 
   /* Brand Colors */
   --primary: #a97ae6;
@@ -22,6 +23,7 @@
   /* Text */
   --text-main: #2D2A32;
   --text-soft: #6E6A75;
+  --text-ghost: rgba(250, 239, 182, 0.08);
 
   /* Borders + Shadows */
   --border-soft: rgba(140, 122, 230, 0.15);
