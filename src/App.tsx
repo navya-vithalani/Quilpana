@@ -24,7 +24,7 @@ import Navbar from "./components/Navbar";
 import SparkPage from "./pages/SparkPage";
 import ManifestoPage from "./pages/ManifestoPage";
 import Manifesto from "./pages/ManifestoChatgpt";
-import BeyondPage from "./pages/BeyondPage"
+import BeyondPage from "./pages/BeyondPage";
 
 function App() {
   const navigate = useNavigate();
@@ -190,13 +190,15 @@ function App() {
           </MainLayout>
         } />
 
-        <Route path="/profile" element={
+        <Route path="/profile/me" element={
           <MainLayout>
-            <ProfilePage
-              favoriteGames={favoriteGameObjects}
-              totalUpvotes={totalUpvotes}
-              totalDownvotes={totalDownvotes}
-            />
+            <ProfilePage />
+          </MainLayout>
+        } />
+
+        <Route path="/profile/:id" element={
+          <MainLayout>
+            <ProfilePage />
           </MainLayout>
         } />
 

@@ -30,6 +30,9 @@ Built as a long-term project exploring immersive interfaces, creator tools, and 
 ### Manifesto page
 ![Manifesto Page](./assets/screenshots/manifesto-page.png)
 
+### Profile page
+![Profile Page](./assets/screenshots/profile-page.png)
+
 ---
 
 ## Current Features

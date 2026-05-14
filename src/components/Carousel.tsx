@@ -125,6 +125,7 @@ const Carousel: React.FC<CarouselProps> = ({
           flex
           gap-6
           overflow-x-scroll
+          overflow-y-visible
           scroll-smooth
           no-scrollbar
           px-20

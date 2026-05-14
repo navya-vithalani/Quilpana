@@ -1,676 +1,223 @@
-import React, { useState, useEffect } from "react";
-import { Game } from "../types/types";
-import Carousel from "../components/Carousel";
-import { useNavigate } from "react-router-dom";
-import { GAMES } from "../constants";
+// src/pages/ProfilePage.tsx
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
-const DEFAULT_AVATAR =
-  "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+// Components
+import ProfileHero from "../components/profile/ProfileHero";
+import ProfileModeToggle from "../components/profile/ProfileModeToggle";
+import PlayerModeSection from "../components/profile/PlayerModeSection";
+import CreatorModeSection from "../components/profile/CreatorModeSection";
+import ProfileBadges from "../components/profile/ProfileBadges";
+import EditProfileModal from "../components/profile/EditProfileModal";
+import SettingsModal from "../components/profile/SettingsModal";
+import { ProfileBackground } from "../components/profile/ProfileBackground"
 
-// Simple inline card for favorite games
-const FavoriteGameCard: React.FC<{ game: Game }> = ({ game }) => {
-  const navigate = useNavigate();
+// Data
+import {
+  UserProfile,
+  MOCK_CURRENT_USER,
+  MOCK_OTHER_USER,
+} from "../features/profile/mockProfileData";
 
-  return (
-    <div
-      onClick={() => navigate(`/player/${game.id}`)}
-      className="
-        flex
-        items-center
-        bg-gray-800
-        p-3
-        rounded-lg
-        hover:bg-gray-700
-        transition-colors
-        cursor-pointer
-      "
-    >
-      <img
-        src={game.thumbnailUrl}
-        alt={game.name}
-        className="w-16 h-12 object-cover rounded-md mr-4"
-      />
+// Styles
+import "../styles/profile.css";
 
-      <div>
-        <h4 className="font-semibold text-gray-200">
-          {game.name}
-        </h4>
+// ─────────────────────────────────────────────────────────
+// AUTH HELPERS  (all mocked — replace with real auth)
+// ─────────────────────────────────────────────────────────
 
-        <p className="text-sm text-gray-400">
-          by {game.creator}
-        </p>
-      </div>
-    </div>
-  );
-};
-
-interface ProfilePageProps {
-  favoriteGames?: Game[];
-  totalUpvotes?: number;
-  totalDownvotes?: number;
+// TODO: Replace with real auth provider check (Supabase, Firebase, JWT, etc.)
+async function checkAuth(): Promise<boolean> {
+  // Simulated network delay
+  await new Promise((r) => setTimeout(r, 120));
+  // TODO: Validate session/token here
+  return true; // always authenticated in mock
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({
-  favoriteGames: favoriteGameObjects = [],
-  totalUpvotes = 0,
-  totalDownvotes = 0
-}) => {
+// TODO: Fetch actual user by ID from backend
+async function fetchUserById(id: string): Promise<UserProfile | null> {
+  await new Promise((r) => setTimeout(r, 80));
+  // Mock: return other user for any ID that isn't "me"
+  if (id === MOCK_CURRENT_USER.id) return MOCK_CURRENT_USER;
+  return MOCK_OTHER_USER;
+}
 
+// ─────────────────────────────────────────────────────────
+// DIVIDER
+// ─────────────────────────────────────────────────────────
+
+const Divider: React.FC = () => <hr className="profile-divider" />;
+
+// ─────────────────────────────────────────────────────────
+// PAGE
+// ─────────────────────────────────────────────────────────
+
+const ProfilePage: React.FC = () => {
+  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
 
-  const [profile, setProfile] = useState<any>(null);
+  // Derived: are we on /profile/me or /profile/:id?
+  // TODO: Compare id against actual authenticated user ID from auth context
+  const isOwnProfile = !id || id === "me";
 
-  const [loading, setLoading] = useState(true);
+  // ── State ──────────────────────────────────────────────
+  const [authChecked, setAuthChecked]   = useState(false);
+  const [user, setUser]                 = useState<UserProfile | null>(null);
+  const [mode, setMode]                 = useState<"player" | "creator">("player");
+  const [showEdit, setShowEdit]         = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
-  const [activeTab, setActiveTab] =
-    useState<"player" | "creator">("player");
-
-  const [showFavorites, setShowFavorites] = useState(false);
-
-  const [showAvatarPopup, setShowAvatarPopup] = useState(false);
-
-  const [uploadingAvatar, setUploadingAvatar] = useState(false);
-
+  // ── Auth + user load ───────────────────────────────────
   useEffect(() => {
+    let cancelled = false;
 
-    setLoading(true);
+    (async () => {
+      // TODO: Use auth context / hook instead of calling checkAuth() here
+      const authed = await checkAuth();
 
-    const isLoggedIn =
-      localStorage.getItem("quilpana-login-status");
+      if (!authed) {
+        // TODO: Route protection — redirect to login with return URL
+        navigate("/login", { replace: true });
+        return;
+      }
 
-    const savedUser =
-      localStorage.getItem("quilpana-user");
+      let profile: UserProfile;
 
-    if (!isLoggedIn || !savedUser) {
+      if (isOwnProfile) {
+        // TODO: Fetch currently authenticated user from backend
+        profile = MOCK_CURRENT_USER;
+      } else {
+        // TODO: Fetch user by id param from backend
+        const fetched = await fetchUserById(id!);
+        if (!fetched) {
+          navigate("/404", { replace: true });
+          return;
+        }
+        profile = fetched;
+      }
 
-      setProfile(null);
+      if (!cancelled) {
+        setUser(profile);
 
-      setLoading(false);
+        // For /profile/:id always show creator mode (view-only)
+        if (!isOwnProfile) setMode("creator");
 
-      navigate("/login");
+        setAuthChecked(true);
+      }
+    })();
 
-      return;
-    }
+    return () => { cancelled = true; };
+  }, [id, isOwnProfile, navigate]);
 
-    try {
-
-      const parsedUser = JSON.parse(savedUser);
-
-      setProfile(parsedUser);
-
-    } catch (error) {
-
-      console.error("Error loading profile:", error);
-
-      setProfile(null);
-    }
-
-    setLoading(false);
-
-  }, [navigate]);
-
-  const {
-    username,
-    avatarUrl,
-    points = 0,
-    credits = 0,
-    favoriteGames: favoriteGameIds = [],
-    playerBadges = [],
-    creatorBadges = [],
-    hasCreated
-  } = profile || {};
-
-  // Use favorite games from props if available
-  const favoriteGamesList =
-    favoriteGameObjects.length > 0
-      ? favoriteGameObjects
-      : GAMES.filter(game =>
-          favoriteGameIds.includes(game.id)
-        );
-
-  const resolvedAvatar =
-    avatarUrl === "default" || !avatarUrl
-      ? DEFAULT_AVATAR
-      : avatarUrl;
-
-  // Fake avatar upload using localStorage
-  const handleAvatarUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-
-    const file = e.target.files?.[0];
-
-    if (!file) return;
-
-    setUploadingAvatar(true);
-
-    try {
-
-      // Fake upload delay because modern software apparently needs theatrics 🎭
-      await new Promise(resolve =>
-        setTimeout(resolve, 1200)
-      );
-
-      const imageUrl = URL.createObjectURL(file);
-
-      const updatedProfile = {
-        ...profile,
-        avatarUrl: imageUrl
-      };
-
-      localStorage.setItem(
-        "quilpana-user",
-        JSON.stringify(updatedProfile)
-      );
-
-      setProfile(updatedProfile);
-
-      setShowAvatarPopup(false);
-
-    } catch (error) {
-
-      console.error(
-        "Error uploading avatar:",
-        error
-      );
-
-    } finally {
-
-      setUploadingAvatar(false);
-
-    }
-  };
-
-  const renderPlaceholderBadges = (count = 8) =>
-    Array(count)
-      .fill(0)
-      .map((_, i) => (
+  // ── Loading state ──────────────────────────────────────
+  if (!authChecked || !user) {
+    return (
+      <div className="profile-page">
+        <ProfileBackground />
         <div
-          key={i}
-          className="
-            w-16
-            h-16
-            rounded-full
-            bg-gray-700
-            animate-pulse
-          "
-        ></div>
-      ));
-
-  if (loading) {
-
-    return (
-      <div className="
-        flex
-        items-center
-        justify-center
-        min-h-[400px]
-      ">
-        <div className="text-gray-400 text-lg">
-          Loading profile...
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "100vh",
+            color: "rgba(255,255,255,0.35)",
+            fontSize: 13,
+            letterSpacing: "0.1em",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          <motion.span
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          >
+            ✦ loading
+          </motion.span>
         </div>
       </div>
     );
   }
 
-  if (!profile) {
-
-    return (
-      <div className="
-        flex
-        items-center
-        justify-center
-        min-h-[400px]
-      ">
-        <div className="text-gray-400 text-lg">
-          No profile found.
-        </div>
-      </div>
-    );
-  }
-
+  // ─────────────────────────────────────────────────────
   return (
+    <div className="profile-page-root">
+      <ProfileBackground />
 
-    <div className="max-w-5xl mx-auto space-y-12">
+      <div className="profile-content">
 
-      {/* Profile Header */}
+        {/* ── HERO ──────────────────────────────────── */}
+        <ProfileHero
+          user={user}
+          isOwnProfile={isOwnProfile}
+          onEditClick={() => setShowEdit(true)}
+          onSettingsClick={() => setShowSettings(true)}
+        />
 
-      <div className="
-        flex
-        flex-col
-        md:flex-row
-        items-center
-        md:items-start
-        gap-6
-        bg-gray-800
-        rounded-xl
-        shadow-lg
-        p-8
-      ">
+        <Divider />
 
-        <div
-          className="
-            relative
-            h-32
-            w-32
-            cursor-pointer
-          "
-          onClick={() => setShowAvatarPopup(true)}
-        >
-
-          <img
-            src={resolvedAvatar}
-            alt="Avatar"
-            className="
-              h-32
-              w-32
-              rounded-full
-              ring-4
-              ring-orange-500
-              object-cover
-            "
-          />
-
-        </div>
-
-        <div className="
-          flex-1
-          space-y-2
-          text-center
-          md:text-left
-        ">
-
-          <h2 className="
-            text-3xl
-            font-bold
-            text-gray-200
-          ">
-            {username || "User"}
-          </h2>
-
-          <div className="
-            flex
-            justify-center
-            md:justify-start
-            gap-6
-            mt-4
-          ">
-
-            <Stat
-              label="Upvotes"
-              value={totalUpvotes}
-              color="text-red-400"
+        {/* ── MODE TOGGLE (own profile only) ────────── */}
+        {isOwnProfile && (
+          <>
+            <ProfileModeToggle
+              mode={mode}
+              onChange={setMode}
+              isCreator={user.isCreator}
             />
-
-            <Stat
-              label="Downvotes"
-              value={totalDownvotes}
-              color="text-blue-400"
-            />
-
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* Favorites */}
-
-      <div>
-
-        <button
-          className="
-            flex
-            items-center
-            gap-2
-            text-left
-            bg-purple-600
-            hover:bg-purple-700
-            px-4
-            py-2
-            rounded-lg
-            font-semibold
-            text-gray-200
-            transition-colors
-          "
-          onClick={() =>
-            setShowFavorites(!showFavorites)
-          }
-        >
-
-          Favorites
-
-          <span className="text-orange-400">
-            {favoriteGamesList.length}
-          </span>
-
-          {showFavorites ? "▲" : "▼"}
-
-        </button>
-
-        {showFavorites && (
-
-          <div className="
-            mt-4
-            grid
-            grid-cols-1
-            md:grid-cols-2
-            gap-4
-          ">
-
-            {favoriteGamesList.length === 0 ? (
-
-              <p className="text-gray-400">
-                You haven't added any favorites yet.
-              </p>
-
-            ) : (
-
-              favoriteGamesList.map((game: Game) => (
-
-                <FavoriteGameCard
-                  key={game.id}
-                  game={game}
-                />
-
-              ))
-
-            )}
-
-          </div>
-
+            <Divider />
+          </>
         )}
 
-      </div>
-
-      {/* Badges */}
-
-      <div>
-
-        <div className="
-          flex
-          gap-4
-          border-b-2
-          border-gray-200
-        ">
-
-          <TabButton
-            active={activeTab === "player"}
-            label="Player"
-            onClick={() =>
-              setActiveTab("player")
-            }
-          />
-
-          <TabButton
-            active={activeTab === "creator"}
-            label={`Creator ${hasCreated ? "" : "🔒"}`}
-            disabled={!hasCreated}
-            onClick={() =>
-              hasCreated &&
-              setActiveTab("creator")
-            }
-          />
-
-        </div>
-
-        {/* PLAYER TAB */}
-
-        {activeTab === "player" && (
-
-          <div className="
-            justify-start
-            mt-6
-            space-y-6
-          ">
-
-            <Stat
-              label="Points"
-              value={points}
-              color="text-green-400"
-            />
-
-            {playerBadges.length ? (
-
-              <Carousel
-                items={playerBadges}
-                renderItem={(b) => (
-                  <BadgeItem badge={b} />
-                )}
-                
-              />
-
-            ) : (
-
-              <div className="
-                flex
-                gap-4
-                flex-wrap
-              ">
-                {renderPlaceholderBadges()}
-              </div>
-
-            )}
-
-          </div>
-
-        )}
-
-        {/* CREATOR TAB */}
-
-        {activeTab === "creator" && (
-
-          <div className="
-            mt-6
-            space-y-6
-          ">
-
-            <Stat
-              label="Credits"
-              value={credits}
-              color="text-purple-400"
-            />
-
-            {creatorBadges.length ? (
-
-              <Carousel
-                items={creatorBadges}
-                renderItem={(b) => (
-                  <BadgeItem badge={b} />
-                )}
-              />
-
-            ) : (
-
-              <div className="
-                flex
-                gap-4
-                flex-wrap
-              ">
-                {renderPlaceholderBadges()}
-              </div>
-
-            )}
-
-          </div>
-
-        )}
-
-      </div>
-
-      {/* AVATAR POPUP */}
-
-      {showAvatarPopup && (
-
-        <div className="
-          fixed
-          inset-0
-          bg-black
-          bg-opacity-60
-          flex
-          items-center
-          justify-center
-          z-50
-        ">
-
-          <div className="
-            bg-gray-800
-            rounded-xl
-            p-6
-            w-80
-            text-center
-            space-y-6
-          ">
-
-            <img
-              src={resolvedAvatar}
-              alt="Avatar preview"
-              className="
-                w-40
-                h-40
-                mx-auto
-                rounded-full
-                object-cover
-                ring-4
-                ring-orange-500
-              "
-            />
-
-            <label className="
-              block
-              cursor-pointer
-              font-semibold
-              text-orange-400
-              hover:text-orange-300
-              transition-colors
-            ">
-
-              {uploadingAvatar
-                ? "Uploading..."
-                : "Change Photo"}
-
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleAvatarUpload}
-                disabled={uploadingAvatar}
-              />
-
-            </label>
-
-            <button
-              onClick={() =>
-                setShowAvatarPopup(false)
-              }
-              disabled={uploadingAvatar}
-              className="
-                block
-                w-full
-                bg-gray-700
-                hover:bg-gray-600
-                disabled:bg-gray-800
-                disabled:cursor-not-allowed
-                py-2
-                rounded-lg
-                font-semibold
-                text-gray-200
-                transition-colors
-              "
+        {/* ── MODE SECTIONS (animated swap) ─────────── */}
+        <AnimatePresence mode="wait">
+          {mode === "player" ? (
+            <motion.div
+              key="player"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              Close
-            </button>
+              <PlayerModeSection user={user} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="creator"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <CreatorModeSection user={user} />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-          </div>
+        {/* ── BADGES (own profile only) ─────────────── */}
+        {isOwnProfile && (
+          <>
+            <Divider />
+            <ProfileBadges />
+          </>
+        )}
+      </div>
 
-        </div>
-
+      {/* ── MODALS ──────────────────────────────────── */}
+      {isOwnProfile && (
+        <>
+          <EditProfileModal
+            isOpen={showEdit}
+            onClose={() => setShowEdit(false)}
+            user={user}
+          />
+          <SettingsModal
+            isOpen={showSettings}
+            onClose={() => setShowSettings(false)}
+          />
+        </>
       )}
-
     </div>
   );
 };
-
-const Stat = ({
-  label,
-  value,
-  color
-}: {
-  label: string;
-  value: number;
-  color: string;
-}) => (
-
-  <div>
-
-    <span className={`
-      text-2xl
-      font-bold
-      ${color}
-    `}>
-      {value}
-    </span>
-
-    <p className="text-sm text-gray-400">
-      {label}
-    </p>
-
-  </div>
-);
-
-const TabButton = ({
-  active,
-  label,
-  onClick,
-  disabled
-}: {
-  active: boolean;
-  label: string;
-  onClick: () => void;
-  disabled?: boolean;
-}) => (
-
-  <button
-    className={`
-      px-4
-      py-2
-      font-semibold
-
-      ${
-        active
-          ? "border-b-4 border-blue-400 text-blue-400"
-          : "text-gray-400"
-      }
-
-      ${
-        disabled
-          ? "opacity-40 cursor-not-allowed"
-          : "hover:text-gray-300"
-      }
-    `}
-    onClick={onClick}
-    disabled={disabled}
-  >
-    {label}
-  </button>
-);
-
-const BadgeItem = ({
-  badge
-}: {
-  badge: any
-}) => (
-
-  <div className="
-    bg-gray-700
-    p-4
-    rounded-lg
-    text-center
-    font-medium
-    text-gray-200
-  ">
-    {badge.name}
-  </div>
-);
 
 export default ProfilePage;

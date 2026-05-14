@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const navItems = [
   { label: "Spark", path: "/spark" },
   { label: "Manifesto", path: "/manifesto" },
-  { label: "Profile", path: "/profile" },
+  { label: "Profile", path: "/profile/me" },
   { label: "Beyond", path: "/beyond" },
 ];
 

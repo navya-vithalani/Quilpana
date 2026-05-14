@@ -1,0 +1,1439 @@
+/* ============================================================
+   PROFILE PAGE — profile.css
+   All classes use .profile-* namespace
+   Uses only CSS variables from variables.css
+   ============================================================ */
+
+/* ── SUGGESTED ADDITIONS TO variables.css ──────────────────
+   Add these to :root in variables.css:
+
+   --profile-orb-1: rgba(169, 122, 230, 0.18);
+   --profile-orb-2: rgba(142, 183, 229, 0.15);
+   --profile-orb-3: rgba(230, 194, 106, 0.12);
+   --profile-orb-4: rgba(239, 146, 176, 0.13);
+   --glass-border: rgba(255, 255, 255, 0.25);
+   --glass-bg: rgba(255, 255, 255, 0.08);
+   --glass-bg-strong: rgba(255, 255, 255, 0.14);
+   --glow-primary: rgba(169, 122, 230, 0.35);
+   --glow-secondary: rgba(142, 183, 229, 0.28);
+   --glow-accent: rgba(230, 194, 106, 0.30);
+   --text-inverse: #ffffff;
+   --divider-soft: rgba(255, 255, 255, 0.12);
+   --pill-primary-bg: rgba(169, 122, 230, 0.22);
+   --pill-secondary-bg: rgba(142, 183, 229, 0.22);
+   --pill-accent-bg: rgba(230, 194, 106, 0.22);
+   --pill-neutral-bg: rgba(255, 255, 255, 0.12);
+   --badge-locked-bg: rgba(255, 255, 255, 0.06);
+   --badge-locked-border: rgba(255, 255, 255, 0.08);
+   ──────────────────────────────────────────────────────── */
+
+/* ============================================================
+   ROOT & PAGE SHELL
+   ============================================================ */
+
+.profile-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  background: var(--bg-main);
+  font-family: 'DM Sans', 'Instrument Sans', system-ui, sans-serif;
+  color: var(--text-inverse, #ffffff);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ProfileBackground 
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Root container ─────────────────────────────────────────────────────────── */
+.profile-bg-root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ── 1. Base gradient ────────────────────────────────────────────────────────── */
+.profile-bg-base {
+  position: absolute;
+  inset: 0;
+  background:
+    /* Gentle top highlight */
+    radial-gradient(ellipse 120% 60% at 50% -10%,
+      rgba(169, 122, 230, 0.10) 0%,
+      transparent 70%),
+    /* Soft teal bottom wash */
+    radial-gradient(ellipse 100% 70% at 70% 110%,
+      rgba(142, 183, 229, 0.09) 0%,
+      transparent 65%),
+    /* Base surface — uses --bg-main */
+    var(--bg-main, #f4f1fa);
+}
+
+/* ── 2. Radial glow — crown of the page ─────────────────────────────────────── */
+.profile-bg-glow-top {
+  position: absolute;
+  top: -18vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  height: 60vh;
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(169, 122, 230, 0.13) 0%,
+    rgba(142, 183, 229, 0.07) 45%,
+    transparent 75%);
+  filter: blur(48px);
+  border-radius: 50%;
+}
+
+/* ── 3. Orb base ─────────────────────────────────────────────────────────────── */
+.profile-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(72px);   /* soft, not aggressive */
+  will-change: transform;
+}
+
+/* Orb A — large violet, top-left */
+.profile-bg-orb--a {
+  width: 52vw;
+  height: 52vw;
+  max-width: 680px;
+  max-height: 680px;
+  top: -12%;
+  left: -14%;
+  background: radial-gradient(circle,
+    rgba(169, 122, 230, 0.12) 0%,
+    transparent 70%);
+}
+
+/* Orb B — medium blue, top-right */
+.profile-bg-orb--b {
+  width: 40vw;
+  height: 40vw;
+  max-width: 520px;
+  max-height: 520px;
+  top: 5%;
+  right: -10%;
+  background: radial-gradient(circle,
+    rgba(142, 183, 229, 0.11) 0%,
+    transparent 70%);
+}
+
+/* Orb C — soft gold, mid-right */
+.profile-bg-orb--c {
+  width: 30vw;
+  height: 30vw;
+  max-width: 400px;
+  max-height: 400px;
+  top: 38%;
+  right: 5%;
+  background: radial-gradient(circle,
+    rgba(230, 194, 106, 0.07) 0%,
+    transparent 70%);
+}
+
+/* ── 5. Wave layer ───────────────────────────────────────────────────────────── */
+.profile-bg-wave-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40vh;
+  min-height: 200px;
+}
+
+.profile-bg-wave {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── 8. Vignette ─────────────────────────────────────────────────────────────── */
+.profile-bg-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 100% at 50% 50%,
+    transparent 55%,
+    rgba(230, 225, 245, 0.18) 100%);
+  pointer-events: none;
+}
+
+/* ── Responsive tweaks ───────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .profile-bg-orb {
+    filter: blur(56px);
+  }
+  .profile-bg-orb--a { width: 80vw; height: 80vw; }
+  .profile-bg-orb--b { width: 65vw; height: 65vw; }
+  .profile-bg-orb--c { width: 50vw; height: 50vw; }
+}
+
+
+/* ============================================================
+   CONTENT CONTAINER
+   ============================================================ */
+
+.profile-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 40px 24px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ============================================================
+   GLASS CARD BASE
+   ============================================================ */
+
+.profile-glass {
+  /* HARDCODED: use --glass-bg-strong once added to variables.css */
+  background: radial-gradient(circle,
+    rgba(209, 28, 222, 0.193) 0%,
+    rgba(170, 126, 237, 0.264) 100%
+  );
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  /* HARDCODED: use --glass-border once added to variables.css */
+  border: 1px solid rgba(170, 126, 237, 0.264);
+  border-radius: 32px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+
+.profile-hero {
+    position: relative;
+  padding: 36px 40px;
+  display: flex;
+  align-items: center;
+  gap: 52px;
+}
+
+.profile-hero::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(169,122,230,0.12),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(142,183,229,0.10),
+      transparent 40%
+    );
+
+  pointer-events: none;
+}
+
+.profile-hero-left {
+    position: relative;
+    z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+}
+
+.profile-avatar-ring {
+  position: relative;
+  width: 240px;
+  height: 240px;
+}
+
+.profile-avatar-ring::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  /* HARDCODED: use --glow-primary once added to variables.css */
+  background: conic-gradient(from 0deg, rgba(169, 122, 230, 0.8), rgba(142, 183, 229, 0.8), rgba(230, 194, 106, 0.8), rgba(169, 122, 230, 0.8));
+  animation: profile-ring-spin 6s linear infinite;
+  z-index: 0;
+}
+
+.profile-avatar {
+  position: relative;
+  z-index: 1;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* HARDCODED: use --glass-border once added to variables.css */
+  border: 2px solid rgba(255,255,255,0.3);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+
+  box-shadow:
+    0 10px 40px rgba(90,60,140,0.14);
+}
+
+.profile-avatar:hover {
+  transform: scale(1.02);
+
+  box-shadow:
+    0 18px 60px rgba(90,60,140,0.18);
+}
+
+.profile-hero-right {
+    position: relative;
+    z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.profile-hero-top {
+  display: flex;
+  align-items: space-between;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.profile-names {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-display-name {
+  font-family: Georgia, serif;
+  font-size: 50px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.004em;
+  color: #640285;
+  /* HARDCODED: use --glow-primary once added to variables.css */
+  text-shadow: 0 0 30px rgba(169, 122, 230, 0.4);
+  margin: 0;
+}
+
+.profile-username {
+  font-size: 18px;
+  color: rgba(70, 55, 95, 0.592);
+  letter-spacing: 0.08em;
+  font-weight: 400;
+}
+
+.profile-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.profile-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  /* HARDCODED: use --glow-primary once added to variables.css */
+  background: rgba(169, 122, 230, 0.9);
+  box-shadow: 0 0 8px rgba(169, 122, 230, 0.8);
+  animation: profile-dot-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes profile-dot-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.profile-status-text {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.02em;
+}
+
+.profile-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.profile-pill {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 12px;
+  letter-spacing: 0.04em;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.profile-pill-tag {
+  /* HARDCODED: use --pill-primary-bg once added to variables.css */
+  background: rgba(169, 122, 230, 0.15);
+  border: 1px solid rgba(169, 122, 230, 0.3);
+  color: rgba(255,255,255,0.8);
+}
+
+.profile-pill-tag:hover {
+  background: rgba(169, 122, 230, 0.28);
+  border-color: rgba(169, 122, 230, 0.5);
+}
+
+.profile-main-stats {
+  /* HARDCODED: use --pill-accent-bg once added to variables.css */
+  font-size: 20px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 40px;
+  letter-spacing: 0.08em;
+  transition: all 0.2s ease;
+  cursor: default;
+  background: rgba(209, 144, 240, 0.278);
+  color: rgba(255,255,255,0.8);
+    transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.project-main-stats:hover {
+    translate: translateY(-1px);
+}
+
+
+.profile-hero-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.profile-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  /* HARDCODED: use --glass-bg once added to variables.css */
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.profile-icon-btn:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.3);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* ============================================================
+   GLOWING DIVIDER
+   ============================================================ */
+
+.profile-divider {
+  width: 100%;
+  height: 4px;
+  /* HARDCODED: use --divider-soft once added to variables.css */
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), rgba(169,122,230,0.3), rgba(255,255,255,0.12), transparent);
+  margin: 0;
+  border: none;
+}
+
+/* ============================================================
+   MODE TOGGLE
+   ============================================================ */
+
+.profile-mode-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.profile-mode-toggle {
+  display: flex;
+  align-items: center;
+  /* HARDCODED: use --glass-bg once added to variables.css */
+  background: var(--bg-secondary);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 99px;
+  padding: 4px;
+  gap: 0;
+  backdrop-filter: blur(1px);
+  position: relative;
+}
+
+.profile-toggle-track {
+  position: relative;
+  display: flex;
+}
+
+.profile-toggle-indicator {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 99px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* HARDCODED: gradient — no variable exists, suggest --gradient-toggle */
+  background: linear-gradient(135deg, rgba(169, 122, 230, 0.7), rgba(142, 183, 229, 0.7));
+  /* HARDCODED: use --glow-primary once added to variables.css */
+  box-shadow: 0 2px 16px rgba(169, 122, 230, 0.4);
+}
+
+.profile-toggle-btn {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 24px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.25s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.profile-toggle-btn.active {
+  color: #3c034f;
+}
+
+.profile-toggle-btn.inactive {
+  color: rgba(73, 5, 96, 0.234);
+}
+
+.profile-toggle-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ============================================================
+   SECTION LAYOUT
+   ============================================================ */
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  padding: 0 2px;
+}
+
+.profile-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 680px) {
+  .profile-two-col { grid-template-columns: 1fr; }
+  .profile-hero { flex-direction: column; align-items: center; }
+  .profile-hero-top { flex-direction: column; }
+  .profile-hero-controls { flex-direction: row; }
+  .profile-display-name { font-size: 24px; }
+  .profile-content { padding: 24px 16px 80px; }
+}
+
+/* ============================================================
+   ProfileStatPill  — append to profile.css
+   Namespace: .profile-stat-pill*
+   ============================================================ */
+.profile-stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+/* ── Pill shell ─────────────────────────────────────────── */
+.profile-stat-pill {
+  flex: 0 0 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px 10px 14px;
+
+  /* Layered surface — not full glass, softer */
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--secondary) 100%
+  );
+  border: 1px solid var(--bg-soft);
+  border-radius: 90px; /* pill shape */
+
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+
+  /* Base shadow — subtle lift */
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+  transition:
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
+}
+
+.profile-stat-pill:hover {
+  border-color: rgba(169, 122, 230, 0.32); /* --primary at low alpha */
+  background: linear-gradient(
+    135deg,
+    var(--secondary) 0%,
+    var(--primary) 100%
+  );
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(169, 122, 230, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.profile-stat-pill:focus-visible {
+  outline: 2px solid rgba(169, 122, 230, 0.6);
+  outline-offset: 2px;
+}
+
+/* ── Left side: icon + label ────────────────────────────── */
+.profile-stat-pill__left {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-stat-pill__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px rgba(169, 122, 230, 0.25));
+  /* HARDCODED: rgba matches --primary */
+}
+
+.profile-stat-pill__label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+
+.profile-stat-pill:hover .profile-stat-pill__label {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* ── Separator dot ──────────────────────────────────────── */
+.profile-stat-pill__dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: rgba(236, 219, 219, 0.464);
+  flex-shrink: 0;
+}
+
+/* ── Right side: count + chevron ────────────────────────── */
+.profile-stat-pill__right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.profile-stat-pill__count {
+  font-family: 'Fraunces', serif;
+  font-size: 40px;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.93);
+  letter-spacing: -0.02em;
+  /* Leading number — visually dominant */
+}
+
+
+/* ── Hover glow overlay ─────────────────────────────────── */
+.profile-stat-pill__glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at 70% 50%,
+    rgba(169, 122, 230, 0.08) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  /* HARDCODED: rgba matches --primary */
+}
+
+/* ============================================================
+   Modal list styles (used inside ProfileModal)
+   ============================================================ */
+
+.profile-stat-pill-modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 0;
+}
+
+.profile-stat-pill-modal-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--bg-seco);
+  border: 1px solid transparent;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.profile-stat-pill-modal-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.profile-stat-pill-modal-serial {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.22);
+  min-width: 20px;
+  flex-shrink: 0;
+}
+
+.profile-stat-pill-modal-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.profile-stat-pill-modal-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-stat-pill-modal-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-stat-pill-modal-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.profile-stat-pill-modal-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.profile-stat-pill-modal-empty {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  padding: 24px 0;
+}
+
+/* ============================================================
+   FOCUS CARD
+   ============================================================ */
+
+.profile-focus-card {
+  position: relative;
+  border-radius: 20px;
+  padding: 28px 28px 24px;
+  /* HARDCODED: use --glass-bg once added to variables.css */
+  background: rgba(255,255,255,0.06);
+  overflow: visible;
+}
+
+.profile-focus-border {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  /* HARDCODED: use --glow-primary/secondary once added to variables.css */
+  background:
+    linear-gradient(rgba(255,255,255,0.06), rgba(255,255,255,0.06)) padding-box,
+    linear-gradient(135deg, rgba(169,122,230,0.6), rgba(142,183,229,0.4), rgba(230,194,106,0.3)) border-box;
+  pointer-events: none;
+}
+
+.profile-focus-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 21px;
+  /* HARDCODED: use --glow-primary once added to variables.css */
+  box-shadow: 0 0 24px rgba(169,122,230,0.2), inset 0 0 24px rgba(169,122,230,0.04);
+  pointer-events: none;
+}
+
+.profile-focus-label-wrap {
+  position: absolute;
+  top: -10px;
+  left: 24px;
+}
+
+.profile-focus-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  /* HARDCODED: use --glass-bg once added to variables.css */
+  background: rgba(169,122,230,0.2);
+  border: 1px solid rgba(169,122,230,0.4);
+  color: rgba(169,122,230,0.95);
+  padding: 3px 12px;
+  border-radius: 99px;
+  backdrop-filter: blur(8px);
+}
+
+.profile-focus-text {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.88);
+  font-style: italic;
+  margin-top: 8px;
+}
+
+/* ============================================================
+   GAME CARD (inside carousel)
+   ============================================================ */
+
+.profile-game-card {
+  flex-shrink: 0;
+  width: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  /* HARDCODED: use --glass-bg once added to variables.css */
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.profile-game-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(169,122,230,0.35);
+  /* HARDCODED: use --glow-primary once added to variables.css */
+  box-shadow: 0 12px 32px rgba(169,122,230,0.18);
+}
+
+.profile-game-thumb {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-game-thumb-placeholder {
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(135deg, rgba(169,122,230,0.25), rgba(142,183,229,0.2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: rgba(255,255,255,0.3);
+}
+
+.profile-game-info {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-game-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-game-meta {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+}
+
+.profile-game-rating {
+  font-size: 11px;
+  color: var(--accent);
+}
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+
+.profile-badge-card {
+  width: 100px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.profile-badge-card:hover {
+  transform: translateY(-3px);
+}
+
+.profile-badge-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.profile-badge-icon-wrap.unlocked {
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.profile-badge-icon-wrap.unlocked::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 20px;
+  opacity: 0.5;
+  filter: blur(8px);
+  z-index: -1;
+}
+
+.profile-badge-icon-wrap.locked {
+  /* HARDCODED: use --badge-locked-bg once added to variables.css */
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+
+.profile-badge-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.profile-badge-name.locked {
+  color: rgba(255,255,255,0.3);
+}
+
+/* ============================================================
+   MODAL SYSTEM
+   ============================================================ */
+
+.profile-modal-overlay {
+  position: fixed;
+  inset: 0;
+  /* HARDCODED: overlay color - no variable equivalent */
+  background: var(--bg-secondary);
+  backdrop-filter: blur(6px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.profile-modal-box {
+  width: 100%;
+  max-width: 540px;
+  max-height: 80vh;
+  border-radius: 24px;
+  /* HARDCODED: use --glass-bg-strong once added to variables.css */
+  background: rgba(20, 12, 45, 0.95);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.profile-modal-header {
+  padding: 24px 28px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.profile-modal-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.profile-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(169,122,230,0.3) transparent;
+}
+
+.profile-modal-body::-webkit-scrollbar { width: 4px; }
+.profile-modal-body::-webkit-scrollbar-thumb { background: rgba(169,122,230,0.4); border-radius: 2px; }
+
+.profile-modal-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 28px;
+  transition: background 0.15s ease;
+  cursor: default;
+}
+
+.profile-modal-item:hover {
+  background: rgba(255,255,255,0.04);
+}
+
+.profile-modal-divider {
+  height: 1px;
+  /* HARDCODED: use --divider-soft once added to variables.css */
+  background: rgba(255,255,255,0.06);
+  margin: 0 28px;
+}
+
+.profile-modal-serial {
+  font-size: 11px;
+  color: rgba(255,255,255,0.2);
+  font-weight: 600;
+  width: 20px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.profile-modal-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0;
+  /* HARDCODED: placeholder color */
+  background: rgba(169,122,230,0.15);
+}
+
+.profile-modal-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-modal-item-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.88);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-modal-item-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+}
+
+.profile-modal-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.profile-modal-pill {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.profile-modal-pill-primary {
+  /* HARDCODED: use --pill-primary-bg once added to variables.css */
+  background: rgba(169,122,230,0.2);
+  border: 1px solid rgba(169,122,230,0.35);
+  color: rgba(169,122,230,0.95);
+}
+
+.profile-modal-pill-secondary {
+  /* HARDCODED: use --pill-secondary-bg once added to variables.css */
+  background: rgba(142,183,229,0.18);
+  border: 1px solid rgba(142,183,229,0.3);
+  color: rgba(142,183,229,0.9);
+}
+
+.profile-modal-pill-accent {
+  /* HARDCODED: use --pill-accent-bg once added to variables.css */
+  background: rgba(230,194,106,0.18);
+  border: 1px solid rgba(230,194,106,0.3);
+  color: rgba(230,194,106,0.9);
+}
+
+.profile-modal-pill-neutral {
+  /* HARDCODED: use --pill-neutral-bg once added to variables.css */
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.6);
+}
+
+.profile-modal-footer {
+  padding: 16px 28px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.profile-modal-footer-btn {
+  padding: 9px 22px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(169,122,230,0.4);
+  /* HARDCODED: use --pill-primary-bg once added to variables.css */
+  background: rgba(169,122,230,0.18);
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-modal-footer-btn:hover {
+  background: rgba(169,122,230,0.3);
+  border-color: rgba(169,122,230,0.6);
+}
+
+/* ============================================================
+   EDIT PROFILE MODAL
+   ============================================================ */
+
+.profile-edit-modal .profile-modal-box {
+  max-width: 480px;
+}
+
+.profile-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px 28px;
+}
+
+.profile-edit-avatar-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-edit-avatar-btn {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px dashed rgba(169,122,230,0.5);
+  transition: all 0.2s ease;
+}
+
+.profile-edit-avatar-btn:hover {
+  border-color: rgba(169,122,230,0.9);
+  /* HARDCODED: use --glow-primary once added to variables.css */
+  box-shadow: 0 0 16px rgba(169,122,230,0.3);
+}
+
+.profile-edit-avatar-hint {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+}
+
+.profile-edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-edit-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+.profile-edit-input {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 12px;
+  /* HARDCODED: use --glass-bg once added to variables.css */
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.9);
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.profile-edit-input:focus {
+  border-color: rgba(169,122,230,0.5);
+  /* HARDCODED: use --glow-primary once added to variables.css */
+  box-shadow: 0 0 0 3px rgba(169,122,230,0.1);
+}
+
+.profile-edit-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.profile-edit-tag {
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid rgba(255,255,255,0.14);
+  /* HARDCODED: use --glass-bg once added to variables.css */
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.55);
+}
+
+.profile-edit-tag.selected {
+  /* HARDCODED: use --pill-primary-bg once added to variables.css */
+  background: rgba(169,122,230,0.2);
+  border-color: rgba(169,122,230,0.4);
+  color: rgba(255,255,255,0.88);
+}
+
+.profile-edit-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 0 28px 24px;
+}
+
+.profile-edit-cancel {
+  padding: 9px 20px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  /* HARDCODED: use --glass-bg once added to variables.css */
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-edit-cancel:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.profile-edit-save {
+  padding: 9px 20px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-edit-save:hover {
+  transform: translateY(-1px);
+  /* HARDCODED: use --glow-primary once added to variables.css */
+  box-shadow: 0 4px 16px rgba(169,122,230,0.4);
+}
+
+/* ============================================================
+   SETTINGS MODAL
+   ============================================================ */
+
+.profile-settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 8px 0;
+}
+
+.profile-settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  transition: background 0.15s ease;
+  cursor: pointer;
+}
+
+.profile-settings-item:hover {
+  background: rgba(255,255,255,0.04);
+}
+
+.profile-settings-item-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  font-weight: 500;
+}
+
+.profile-settings-item-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 2px;
+}
+
+.profile-settings-item-danger .profile-settings-item-label {
+  /* HARDCODED: danger color — suggest adding --color-danger to variables.css */
+  color: rgba(255, 105, 105, 0.85);
+}
+
+.profile-toggle-switch {
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  transition: background 0.25s ease;
+  flex-shrink: 0;
+}
+
+.profile-toggle-switch.on  { background: var(--primary); }
+.profile-toggle-switch.off {
+  /* HARDCODED: use --glass-bg once added to variables.css */
+  background: rgba(255,255,255,0.15);
+}
+
+.profile-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: left 0.25s ease;
+}
+
+.profile-toggle-switch.on  .profile-toggle-thumb { left: 18px; }
+.profile-toggle-switch.off .profile-toggle-thumb { left: 2px; }
+
+/* ============================================================
+   BADGE MODAL
+   ============================================================ */
+
+.profile-badge-modal-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 16px;
+}
+
+.profile-badge-modal-desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.profile-badge-modal-condition {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  /* HARDCODED: use --glass-bg once added to variables.css */
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.profile-badge-modal-status {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.profile-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: rgba(255,255,255,0.3);
+  font-size: 13px;
+}
