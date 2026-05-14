@@ -1,0 +1,891 @@
+/* ============================================================
+   beyond.css — Styles for the Beyond page
+   All classes prefixed with .beyond to avoid global collisions
+   Uses CSS variables from variables.css
+   ============================================================ */
+
+/* ── Suggested additions to variables.css ─────────────────── */
+/*
+  --beyond-orb-1: rgba(169, 122, 230, 0.18);
+  --beyond-orb-2: rgba(142, 183, 229, 0.14);
+  --beyond-orb-3: rgba(230, 194, 106, 0.10);
+  --beyond-glow-primary: rgba(169, 122, 230, 0.35);
+  --beyond-glow-secondary: rgba(142, 183, 229, 0.28);
+  --beyond-signal-active: #a97ae6;
+  --beyond-signal-forming: #8eb7e5;
+  --beyond-divider: rgba(169, 122, 230, 0.25);
+  --beyond-text-dim: rgba(45, 42, 50, 0.45);
+  --beyond-card-hover: rgba(255, 255, 255, 0.88);
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+*/
+
+/* ── Page wrapper ──────────────────────────────────────────── */
+
+.beyond-root {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg-main);
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+/* ── Atmospheric background ────────────────────────────────── */
+
+.beyond-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Soft noise overlay */
+.beyond-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 180px;
+  opacity: 0.5;
+}
+
+/* Subtle grid */
+.beyond-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(169, 122, 230, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(169, 122, 230, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Floating orbs */
+.beyond-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  animation: beyondOrbDrift 18s ease-in-out infinite alternate;
+}
+
+.beyond-orb-1 {
+  width: 520px;
+  height: 520px;
+  top: -120px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(169, 122, 230, 0.18), transparent 70%);
+  animation-duration: 22s;
+}
+
+.beyond-orb-2 {
+  width: 400px;
+  height: 400px;
+  top: 40%;
+  right: -80px;
+  background: radial-gradient(circle, rgba(142, 183, 229, 0.15), transparent 70%);
+  animation-duration: 17s;
+  animation-delay: -5s;
+}
+
+.beyond-orb-3 {
+  width: 300px;
+  height: 300px;
+  bottom: 15%;
+  left: 30%;
+  background: radial-gradient(circle, rgba(230, 194, 106, 0.11), transparent 70%);
+  animation-duration: 25s;
+  animation-delay: -10s;
+}
+
+.beyond-orb-4 {
+  width: 200px;
+  height: 200px;
+  top: 60%;
+  left: 10%;
+  background: radial-gradient(circle, rgba(169, 122, 230, 0.10), transparent 70%);
+  animation-duration: 20s;
+  animation-delay: -8s;
+}
+
+@keyframes beyondOrbDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(30px, -20px) scale(1.04); }
+  66%  { transform: translate(-20px, 25px) scale(0.97); }
+  100% { transform: translate(15px, -10px) scale(1.02); }
+}
+
+/* ── Content layer ─────────────────────────────────────────── */
+
+.beyond-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Shared section styles ─────────────────────────────────── */
+
+.beyond-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.beyond-section-label {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary);
+  opacity: 0.7;
+  margin-bottom: 1.2rem;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 1 — HERO
+══════════════════════════════════════════════════════════ */
+
+.beyond-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 5rem 2rem 4rem;
+}
+
+.beyond-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+/* Avatar */
+.beyond-avatar-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.beyond-avatar-frame {
+  position: relative;
+  width: 280px;
+  height: 280px;
+}
+
+/* Spinning gradient border ring */
+.beyond-avatar-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(169, 122, 230, 0.0),
+    rgba(169, 122, 230, 0.8),
+    rgba(142, 183, 229, 0.6),
+    rgba(230, 194, 106, 0.4),
+    rgba(169, 122, 230, 0.0)
+  );
+  animation: beyondRingSpin 8s linear infinite;
+}
+
+@keyframes beyondRingSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Glow halo behind avatar */
+.beyond-avatar-glow {
+  position: absolute;
+  inset: -28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(169, 122, 230, 0.22), transparent 65%);
+  animation: beyondGlowPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes beyondGlowPulse {
+  0%   { opacity: 0.7; transform: scale(1); }
+  100% { opacity: 1;   transform: scale(1.06); }
+}
+
+/* The actual avatar circle */
+.beyond-avatar-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--bg-soft) 0%, var(--bg-card) 50%, var(--bg-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: default;
+  /* Thin white inset ring */
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.55),
+    0 20px 60px rgba(169, 122, 230, 0.2);
+}
+
+.beyond-avatar-img:hover {
+  transform: translateY(-6px) scale(1.015);
+}
+
+.beyond-avatar-placeholder-icon {
+  font-size: 5rem;
+  opacity: 0.35;
+  user-select: none;
+  line-height: 1;
+}
+
+/* Secondary floating badge */
+.beyond-avatar-badge {
+  position: absolute;
+  bottom: 10px;
+  right: -10px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  padding: 0.3rem 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(169, 122, 230, 0.15);
+  white-space: nowrap;
+  animation: beyondBadgeFloat 3s ease-in-out infinite alternate;
+}
+
+@keyframes beyondBadgeFloat {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-5px); }
+}
+
+/* Intro text */
+.beyond-hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.beyond-hero-name {
+  /* Replace with actual name */
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(3rem, 6vw, 5.2rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.beyond-hero-name em {
+  font-style: italic;
+  color: var(--primary-dark);
+}
+
+.beyond-hero-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  opacity: 0.75;
+  margin: 0;
+}
+
+.beyond-hero-bio {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-soft);
+  max-width: 480px;
+  margin: 0;
+  font-weight: 400;
+}
+
+.beyond-hero-bio strong {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+/* Scroll nudge */
+.beyond-scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  opacity: 0.4;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  animation: beyondScrollFade 2s ease-in-out infinite alternate;
+}
+
+.beyond-scroll-hint-line {
+  width: 28px;
+  height: 1px;
+  background: var(--text-soft);
+}
+
+@keyframes beyondScrollFade {
+  0%   { opacity: 0.25; }
+  100% { opacity: 0.5; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 2 — SIGNALS
+══════════════════════════════════════════════════════════ */
+
+.beyond-signals-section {
+  padding: 6rem 2rem;
+}
+
+.beyond-signals-header {
+  max-width: 1100px;
+  margin: 0 auto 3.5rem;
+}
+
+.beyond-signals-title {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+  margin: 0 0 0.5rem;
+}
+
+.beyond-signals-subtitle {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  margin: 0;
+  opacity: 0.75;
+}
+
+/* Two-column layout */
+.beyond-signals-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0 2.5rem;
+  align-items: start;
+}
+
+/* Animated divider */
+.beyond-signals-divider {
+  position: relative;
+  background: var(--beyond-divider, rgba(169, 122, 230, 0.2));
+  align-self: stretch;
+  overflow: hidden;
+}
+
+.beyond-signals-divider::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, rgba(169, 122, 230, 0.6), transparent);
+  animation: beyondDividerPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes beyondDividerPulse {
+  0%   { top: -50%; opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Column headers */
+.beyond-signals-col-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 1.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.beyond-signals-col-head.active {
+  color: var(--primary);
+}
+
+.beyond-signals-col-head.forming {
+  color: var(--secondary-dark);
+}
+
+/* Signal items */
+.beyond-signal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.beyond-signal-item {
+  position: relative;
+  padding: 1rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(255,255,255,0.45);
+  cursor: default;
+  transition:
+    background 0.28s ease,
+    border-color 0.28s ease,
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.28s ease;
+  overflow: hidden;
+}
+
+.beyond-signal-item:hover {
+  background: rgba(255,255,255,0.80);
+  border-color: rgba(169, 122, 230, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(169, 122, 230, 0.1);
+}
+
+/* Hover glow strip */
+.beyond-signal-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  border-radius: 2px 0 0 2px;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.beyond-signal-item.active-item::before {
+  background: var(--primary);
+}
+
+.beyond-signal-item.forming-item::before {
+  background: var(--secondary-dark);
+}
+
+.beyond-signal-item:hover::before {
+  opacity: 1;
+}
+
+.beyond-signal-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  opacity: 0.45;
+  color: var(--text-soft);
+  margin-bottom: 0.35rem;
+}
+
+.beyond-signal-main {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.4;
+  margin-bottom: 0.3rem;
+}
+
+/* Description — hidden, revealed on hover */
+.beyond-signal-desc {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  line-height: 1.55;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.38s ease, opacity 0.3s ease, margin-top 0.3s ease;
+}
+
+.beyond-signal-item:hover .beyond-signal-desc {
+  max-height: 80px;
+  opacity: 0.85;
+  margin-top: 0.45rem;
+}
+
+/* Status dot */
+.beyond-signal-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.beyond-signal-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.beyond-signal-dot.active {
+  background: var(--primary);
+  box-shadow: 0 0 5px rgba(169, 122, 230, 0.6);
+  animation: beyondDotPulse 2s ease-in-out infinite;
+}
+
+.beyond-signal-dot.forming {
+  background: var(--secondary-dark);
+  box-shadow: 0 0 5px rgba(142, 183, 229, 0.5);
+}
+
+.beyond-signal-dot.pending {
+  background: var(--accent);
+  opacity: 0.7;
+}
+
+@keyframes beyondDotPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.beyond-signal-status-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  color: var(--text-soft);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 3 — CONNECTIONS
+══════════════════════════════════════════════════════════ */
+
+.beyond-connections-section {
+  padding: 5rem 2rem;
+}
+
+.beyond-connections-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.beyond-connections-header {
+  margin-bottom: 2.8rem;
+}
+
+.beyond-connections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Each connection row */
+.beyond-connection-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.4rem 1.8rem;
+  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+  background: rgba(255,255,255,0.5);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.beyond-connection-item:hover {
+  background: rgba(255,255,255,0.85);
+  border-color: rgba(169, 122, 230, 0.3);
+  transform: translateX(6px);
+  box-shadow: 0 10px 40px rgba(169, 122, 230, 0.12);
+}
+
+/* Glow underline sweep on hover */
+.beyond-connection-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.beyond-connection-item:hover::after {
+  transform: scaleX(1);
+}
+
+.beyond-connection-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.beyond-connection-item:hover .beyond-connection-icon {
+  transform: scale(1.08);
+}
+
+.beyond-connection-icon.github   { background: rgba(45, 42, 50, 0.08); }
+.beyond-connection-icon.instagram { background: rgba(230, 194, 106, 0.15); }
+.beyond-connection-icon.email    { background: rgba(169, 122, 230, 0.12); }
+.beyond-connection-icon.youtube  { background: rgba(220, 80, 80, 0.1); }
+
+.beyond-connection-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.beyond-connection-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-main);
+  letter-spacing: 0.01em;
+}
+
+.beyond-connection-sub {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  opacity: 0.75;
+}
+
+/* Animated arrow */
+.beyond-connection-arrow {
+  font-size: 1.1rem;
+  color: var(--primary);
+  opacity: 0.45;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  flex-shrink: 0;
+}
+
+.beyond-connection-item:hover .beyond-connection-arrow {
+  transform: translateX(5px);
+  opacity: 0.9;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 4 — FEEDBACK
+══════════════════════════════════════════════════════════ */
+
+.beyond-feedback-section {
+  padding: 6rem 2rem 8rem;
+}
+
+.beyond-feedback-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.beyond-feedback-title {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 300;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+  margin: 0 0 1rem;
+}
+
+.beyond-feedback-intro {
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 0 2.8rem;
+  opacity: 0.85;
+}
+
+/* Form */
+.beyond-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+.beyond-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.beyond-input,
+.beyond-textarea {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  background: rgba(255,255,255,0.55);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.beyond-input::placeholder,
+.beyond-textarea::placeholder {
+  color: var(--text-soft);
+  opacity: 0.55;
+}
+
+.beyond-input:focus,
+.beyond-textarea:focus {
+  border-color: rgba(169, 122, 230, 0.5);
+  background: rgba(255,255,255,0.82);
+  box-shadow: 0 0 0 3px rgba(169, 122, 230, 0.1);
+}
+
+.beyond-textarea {
+  min-height: 130px;
+  line-height: 1.6;
+}
+
+.beyond-form-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.beyond-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 2.2rem;
+  border-radius: 50px;
+  border: 1px solid rgba(169, 122, 230, 0.4);
+  background: rgba(169, 122, 230, 0.1);
+  color: var(--primary-dark);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+.beyond-submit-btn:hover {
+  background: rgba(169, 122, 230, 0.18);
+  border-color: rgba(169, 122, 230, 0.6);
+  box-shadow: 0 4px 20px rgba(169, 122, 230, 0.2);
+  transform: translateY(-1px);
+}
+
+.beyond-submit-btn:active {
+  transform: translateY(0);
+}
+
+.beyond-submit-btn svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.25s ease;
+}
+
+.beyond-submit-btn:hover svg {
+  transform: translateX(3px);
+}
+
+/* Success/error state */
+.beyond-form-status {
+  text-align: center;
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+  min-height: 1.2em;
+  transition: opacity 0.3s ease;
+}
+
+.beyond-form-status.success { color: var(--primary); opacity: 0.9; }
+.beyond-form-status.error   { color: #d0524a; opacity: 0.9; }
+
+/* ── Section transition separator ─────────────────────────── */
+
+.beyond-sep {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.beyond-sep-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-soft), transparent);
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .beyond-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .beyond-hero-bio {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .beyond-scroll-hint {
+    justify-content: center;
+  }
+
+  .beyond-signals-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem 0;
+  }
+
+  .beyond-signals-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .beyond-hero {
+    padding: 4rem 1.25rem 3rem;
+  }
+
+  .beyond-avatar-frame {
+    width: 200px;
+    height: 200px;
+  }
+
+  .beyond-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .beyond-connection-item {
+    padding: 1.1rem 1.2rem;
+    gap: 1rem;
+  }
+
+  .beyond-section,
+  .beyond-signals-header,
+  .beyond-signals-grid,
+  .beyond-connections-inner,
+  .beyond-sep {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}

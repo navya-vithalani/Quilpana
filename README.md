@@ -23,6 +23,10 @@ Built as a long-term project exploring immersive interfaces, creator tools, and 
 ### Spark page
 ![Spark Page](./assets/screenshots/spark-page.png)
 
+### Beyond Page
+![Beyond Page](./assets/screenshots/beyond-page-1.png)
+![Beyond Page](./assets/screenshots/beyond-page-2.png)
+
 ### Manifesto page
 ![Manifesto Page](./assets/screenshots/manifesto-page.png)
 

@@ -23,7 +23,8 @@ import SynapseChat from "./components/chat/SynapseChat";
 import Navbar from "./components/Navbar";
 import SparkPage from "./pages/SparkPage";
 import ManifestoPage from "./pages/ManifestoPage";
-import Manifesto from "./pages/ManifestoChatgpt"
+import Manifesto from "./pages/ManifestoChatgpt";
+import BeyondPage from "./pages/BeyondPage"
 
 function App() {
   const navigate = useNavigate();
@@ -173,6 +174,13 @@ function App() {
         <Route path="/manifesto" element={
           <MainLayout>
             <ManifestoPage />
+          </MainLayout>
+        } />
+
+        
+        <Route path="/beyond" element={
+          <MainLayout>
+            <BeyondPage />
           </MainLayout>
         } />
         

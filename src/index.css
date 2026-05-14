@@ -12,6 +12,7 @@
 @import "./styles/navbar.css";
 @import "./styles/spark.css";
 @import "./styles/manifesto.css";
+@import "./styles/beyond.css";
 /* @import "./styles/manifestocgpt.css"; */
 
 @tailwind base;

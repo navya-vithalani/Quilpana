@@ -6,7 +6,7 @@ const navItems = [
   { label: "Spark", path: "/spark" },
   { label: "Manifesto", path: "/manifesto" },
   { label: "Profile", path: "/profile" },
-  { label: "Contact", path: "/contact" },
+  { label: "Beyond", path: "/beyond" },
 ];
 
 const Navbar: React.FC = () => {
