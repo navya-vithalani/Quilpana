@@ -1,22 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { DotsVerticalIcon } from "./Icons";
+import { DotsVerticalIcon, getIcon } from "./Icons";
+import { NAV_ITEMS } from "../constants/navigation"
 
-interface DropdownMenuProps {
-  isLoggedIn: boolean;
-
-  onLogin: () => void;
-  onLogout: () => void;
-
-  onOpenPremiumModal?: () => void;
-}
-
-const DropdownMenu: React.FC<DropdownMenuProps> = ({
-  isLoggedIn,
-  onLogin,
-  onLogout,
-  onOpenPremiumModal,
-}) => {
+const DropdownMenu: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -77,83 +64,27 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
           "
         >
 
-          {isLoggedIn ? (
-            <>
-
+          {NAV_ITEMS
+            .filter((item) => item.contexts.includes("dropdown"))
+            .map((item) => (
               <button
+                key={item.href}
                 onClick={() => {
-                  navigate("/profile");
-                  setOpen(false);
+                            navigate(item.href);
                 }}
-                className="
-                  w-full
-                  text-left
-                  px-4
-                  py-3
-                  hover:bg-gray-100
-                  transition-colors
-                "
+                className="dropdown-item"
               >
-                Profile
+                {/* ICON (temporary mapping) */}
+                <span className="text-xl shrink-0">
+                  {getIcon(item.href)}
+                </span>
+          
+                <span className="dropdown-text">
+                  {item.label}
+                </span>
               </button>
-
-              {onOpenPremiumModal && (
-                <button
-                  onClick={() => {
-                    onOpenPremiumModal();
-                    setOpen(false);
-                  }}
-                  className="
-                    w-full
-                    text-left
-                    px-4
-                    py-3
-                    hover:bg-gray-100
-                    transition-colors
-                  "
-                >
-                  Premium
-                </button>
-              )}
-
-              <button
-                onClick={() => {
-                  onLogout();
-                  setOpen(false);
-                }}
-                className="
-                  w-full
-                  text-left
-                  px-4
-                  py-3
-                  hover:bg-gray-100
-                  transition-colors
-                  text-red-500
-                "
-              >
-                Logout
-              </button>
-
-            </>
-          ) : (
-            <button
-              onClick={() => {
-                onLogin();
-                setOpen(false);
-              }}
-              className="
-                w-full
-                text-left
-                px-4
-                py-3
-                hover:bg-gray-100
-                transition-colors
-              "
-            >
-              Login
-            </button>
-          )}
-
+            ))}
+          
         </div>
       )}
     </div>

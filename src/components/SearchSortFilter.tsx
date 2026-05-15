@@ -89,7 +89,7 @@ function SearchSortFilter<T extends Record<string, any>>({
             className="
               p-3
               rounded-2xl
-              bg-white/10
+              bg-/10
               hover:bg-white/20
               border
               border-white/10
@@ -97,10 +97,10 @@ function SearchSortFilter<T extends Record<string, any>>({
               transition
             "
           >
-            <FilterIcon className="w-5 h-5 text-white" />
+            <FilterIcon className="w-5 h-5 " />
           </button>
 
-          <div className="text-sm text-white/70">
+          <div className="text-sm">
             {Object.keys(activeFilters).length > 0
               ? `${Object.values(activeFilters).flat().length} active`
               : "No filters"}
@@ -110,7 +110,7 @@ function SearchSortFilter<T extends Record<string, any>>({
 
         {/* SEARCH */}
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-right gap-3">
 
           <div
             className={`

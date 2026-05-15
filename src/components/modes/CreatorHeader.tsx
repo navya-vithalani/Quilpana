@@ -5,8 +5,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   CodeIcon,
   BrainIcon,
-} from "./Icons";
-import DropdownMenu from "./DropdownMenu";
+} from "../Icons";
+import DropdownMenu from "../DropdownMenu";
 
 type CreatorHeaderProps = {
   isLoggedIn: boolean;
@@ -33,40 +33,16 @@ const CreatorHeader: React.FC<CreatorHeaderProps> = ({
 
   ScrollTrigger.create({
     trigger: header,
-    start: "top top",
+    start: "top -100",
     end: "+=500",
     onEnter: () => header.classList.add("shrunk"),
     onLeaveBack: () => header.classList.remove("shrunk"),
-    scrub: true,
-
-  onUpdate: (self) => {
-    const p = self.progress; // 0 → 1
-
-    // header height morph
-    header.style.height = `${220 - p * 140}px`;
-
-    // logo shrink
-    const logo = header.querySelector(".qp-logo") as HTMLElement | null;
-    logo?.style.setProperty("transform", `scale(${1 - p * 0.3})`);
-
-    // title fade out
-    const title = header.querySelector(".qp-header-title") as HTMLElement | null;
-    if (title) {
-      title.style.opacity = `${1 - p * 1.2}`;
-    }
-
-    // subtitle fade out
-    const subtitle = header.querySelector(".qp-header-subtitle") as HTMLElement | null;
-    if (subtitle) {
-      subtitle.style.opacity = `${1 - p * 1.5}`;
-    }
-  },
-});
+  });
 
 }, []);
 
   return (
-    <header ref={headerRef} className="qp-header bg-creator-hero">
+    <header ref={headerRef} className="qp-header creator-hero-bg">
 
       <div className="qp-header-inner">
 
@@ -139,12 +115,7 @@ const CreatorHeader: React.FC<CreatorHeaderProps> = ({
             Play
           </button>
 
-          <DropdownMenu
-            isLoggedIn={false}
-            onLogin={onLogin}
-            onLogout={onLogout}
-            onOpenPremiumModal={onOpenPremiumModal}
-          />
+          <DropdownMenu />
 
         </div>
 

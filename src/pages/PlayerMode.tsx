@@ -40,16 +40,6 @@ const PlayerPage: React.FC<PlayerPageProps> = ({
     setFilteredGames(allGames);
   }, [allGames]);
 
-  const categoryOptions = useMemo(
-    () => Array.from(new Set(allGames.map(g => g.category))),
-    [allGames]
-  );
-
-  const creatorOptions = useMemo(
-    () => Array.from(new Set(allGames.map(g => g.creator))),
-    [allGames]
-  );
-
 const sortOptions = useMemo<
   {
     label: string;
@@ -105,6 +95,7 @@ const handleSurpriseMe = () => {
     
     <div className="animate-fade-in p-background page-container">
 
+
   <div className="flex flex-col gap-6 mb-10">
 
     <button
@@ -138,6 +129,7 @@ const handleSurpriseMe = () => {
               </div>
             )}
           </div>
+
 
           {filteredGames.length === 0 ? (
             <EmptyState

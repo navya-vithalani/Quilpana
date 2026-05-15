@@ -4,18 +4,22 @@
 
 :root {
   /* Backgrounds */
-  --bg-main: #faefb6f5;
+  --bg-main: #ffefcbf5;
   --bg-soft: #efb3f2;
   --bg-card: #e491f39f;
-  --bg-secondary: #c6bc91f0;
+  --bg-primary: #f5e4baf0;
+  --bg-secondary: #d1c79bf0;
   --bg-glass: rgba(255, 255, 255, 0.72);
 
   /* Brand Colors */
   --primary: #a97ae6;
+  --primary-light: #d687f0;
   --primary-dark: #985dd3;
 
   --secondary: #8eb7e5;
-  --secondary-dark: #689fd6;
+  --secondary-light: #8ed6f5;
+  --secondary-dark: #689fd6;   
+
 
   /* Accent */
   --accent: #E6C26A;

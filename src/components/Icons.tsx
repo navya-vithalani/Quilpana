@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaHome, FaGamepad, FaPaintBrush, FaUser } from 'react-icons/fa';
 
 // Defines common props for all icon components for consistency.
 interface IconProps {
@@ -84,3 +85,20 @@ export const FilterIcon: React.FC<IconProps> = ({ className }) => (
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L14 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 018 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />
   </svg>
 );
+
+export const getIcon = (href: string) => {
+  switch (href) {
+    case "/":
+      return <FaHome />;
+    case "/spark":
+      return <FaGamepad />;
+    case "/beyond":
+      return <FaGamepad />;
+    case "/manifesto":
+      return <FaPaintBrush />;
+    case "/profile":
+      return <FaUser />;
+    default:
+      return <FaHome />;
+  }
+};

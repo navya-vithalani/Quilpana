@@ -11,7 +11,7 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
-  transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 2.5s cubic-bezier(0.22, 1, 0.36, 1);
 
   display: flex;
   align-items: center;
@@ -60,14 +60,14 @@
   font-weight: 800;
   letter-spacing: 0.05em;
   opacity: 1;
-  transition: all 0.3s ease;
+  transition: all 2s ease;
 }
 
 .qp-header-subtitle {
   font-size: 0.875rem;
   margin-top: -0.25rem;
   opacity: 1;
-  transition: opacity 0.4s ease;
+  transition: opacity 2s ease;
 }
 
 /* FULL DISAPPEAR (no space, no ghosting, no clicks) */
@@ -132,4 +132,53 @@
 
 .qp-action-button:hover {
   transform: scale(1.05);
+}
+
+
+/* Backgrounds */
+
+.player-hero-bg {
+  background-image: linear-gradient(135deg,
+   var(--secondary-light) 0%,
+   var(--secondary) 50%,
+   var(--secondary-dark) 100%);;
+}
+
+.creator-hero-bg {
+  background-image: linear-gradient(135deg,
+   var(--primary-dark) 0%,
+   var(--primary) 50%,
+   var(--primary-light) 100%);;
+}
+
+
+/* dropdown.css */
+
+.dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 12px;
+  font-size: 14px;
+
+  color: #333;
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(0, 0, 0, 0.06);
+  transform: translateX(2px);
+}
+
+.dropdown-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: inherit;
 }

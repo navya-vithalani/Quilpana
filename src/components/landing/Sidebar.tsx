@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaGamepad, FaPaintBrush, FaUser, FaHome } from "react-icons/fa";
+import { getIcon } from "../Icons";
+import { NAV_ITEMS } from "../../constants/navigation";
 
 
 
@@ -63,64 +64,29 @@ transition={{
     "
   >
 
-    {/* HOME */}
-
+{NAV_ITEMS
+  .filter((item) => item.contexts.includes("sidebar"))
+  .map((item) => (
     <button
-      onClick={() => navigate("/")}
+      key={item.href}
+      onClick={() => {
+                  navigate(item.href);
+      }}
       className="sidebar-item"
     >
-      <FaHome className="text-xl shrink-0" />
+      {/* ICON (temporary mapping) */}
+      <span className="text-xl shrink-0">
+        {getIcon(item.href)}
+      </span>
 
       <span className="sidebar-text">
-        Home
+        {item.label}
       </span>
     </button>
-
-    {/* PLAYER */}
-
-    <button
-      onClick={() => navigate("/player")}
-      className="sidebar-item"
-    >
-      <FaGamepad className="text-xl shrink-0" />
-
-      <span className="sidebar-text">
-        Player Mode
-      </span>
-    </button>
-
-    {/* CREATOR */}
-
-    <button
-      onClick={() => navigate("/creator")}
-      className="sidebar-item"
-    >
-      <FaPaintBrush className="text-xl shrink-0" />
-
-      <span className="sidebar-text">
-        Creator Studio
-      </span>
-    </button>
-
-    {/* PROFILE */}
-
-    <button
-      onClick={() =>
-        navigate(loggedIn ? "/profile" : "/login")
-      }
-      className="sidebar-item"
-    >
-      <FaUser className="text-xl shrink-0" />
-
-      <span className="sidebar-text">
-        Profile
-      </span>
-    </button>
+  ))}
 
   </div>
-
 </motion.div>
-  )
-}
+)}
 
 export default Sidebar;
